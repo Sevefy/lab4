@@ -1,0 +1,15 @@
+<h1>Поликлиника</h1>
+<h2>{{pageinfo}}</h2>
+<a href="/contact">Контактная информация</a>
+<form method="post">
+    <label for="docta">Выберите врача</label>
+    <select id="docta" name="docta" >{{#each listDocta}}
+                <option>{{this.idD}}: {{this.Name}}</option>
+            {{/each}}</select>
+    <p><label for="date">Выберите дату приема</label>
+    <input type="date" id="date" name="date" required  pattern="\d{4}-\d{2}-\d{2}"/>
+    <p><label for="time">Введите время приема (Время работы с 9:00 до 20:00)</label>
+    <input id="time" name="time" type="time" min="09:00" max="20:00" value="09:00" required>
+    <p><input type="submit"  value="Записаться">
+</form> 
+<label for="message">{{message}}</label>
