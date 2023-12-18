@@ -28,7 +28,14 @@ connection.query("SELECT * FROM docta")
   .catch(err =>{
     console.log(err);
   });
-
+console.log(currentDate.getDate());
+connection.query(`SELECT * FROM record where day(time) = ${currentDate.getDate()}`)
+  .then(([rows]) =>{
+    listRecords = rows;
+  })
+  .catch(err =>{
+    console.log(err);
+  });
 
 //Чтобы установить Handlebars в качестве движка представлений в Express, вызывается функция:
 // устанавливаем настройки для файлов layout
@@ -38,7 +45,7 @@ app.engine("hbs", expressHbs.engine(
       defaultLayout: "layout",
       extname: "hbs"
   }
-))
+));
 app.set("view engine", "hbs");
 hbs.registerPartials(__dirname + "/views/partials");
 app.get("/login", function(_, response){
@@ -66,6 +73,13 @@ app.get("/menu", function(request,response){
     listDocta: listDocta
   });
 });
+
+app.get("/rec", function(rec,res){
+  res.render("records",{
+    listRecord: listRecords
+  });
+}
+);
 
 app.post("/menu",urlencodedParser,function(request,response){
   if(!request.body) return response.sendStatus(400);
@@ -134,13 +148,7 @@ const fs = require("fs");
 
 function checktimerec()
 {
-  connection.query("SELECT * FROM record")
-  .then(([rows]) =>{
-    listRecords = rows;
-  })
-  .catch(err =>{
-    console.log(err);
-  });
+  
   if(listRecords != undefined){
     
     for(var i = 0; i<listRecords.length; i++)
@@ -154,7 +162,7 @@ function checktimerec()
           if(listRecords[i].idDocta == listDocta[j].idD)
             docta = listDocta[j].Name;
         }
-        var message = `${listRecords[i].polis} ваша запись к врачу ${docta} через ${time} часа\n`
+        var message = `${listRecords[i].polis} ваша запись к врачу ${docta} через ${time} часа + ${currentDate}\n`
         fs.appendFile("./log/record.log",message, function(error){
           if(error){  // если ошибка
               return console.log(error);

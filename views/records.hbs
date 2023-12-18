@@ -1,0 +1,9 @@
+<h1>Записи к врачам</h1>
+<h2>{{pageinfo}}</h2>
+<label for="rec">занятое время на сегодня: </label>
+<ol>
+    {{#each listRecord}}
+    <li>{{this.time}}</li>
+    {{/each}}
+</ol>
+
