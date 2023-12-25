@@ -112,6 +112,13 @@ function addRec(idD, polis, date,response)
         message: "Это время занято"
       });
     });
+    connection.query(`SELECT * FROM record where day(time) = ${currentDate.getDate()}`)
+  .then(([rows]) =>{
+    listRecords = rows;
+  })
+  .catch(err =>{
+    console.log(err);
+  });
 }
 
 function checkuser()
